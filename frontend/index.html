@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Stock Analysis App</title>
+  <link rel="stylesheet" href="style.css" />
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+  <main class="container">
+    <section class="card">
+      <h1>Stock Analysis</h1>
+      <p class="subtitle">Enter a stock symbol like AAPL, TSLA, or MSFT</p>
+
+      <div class="input-row">
+        <input id="symbolInput" type="text" placeholder="Enter symbol" maxlength="10" />
+      </div>
+
+      <div class="button-row">
+        <button id="priceBtn">Get Price</button>
+        <button id="indicatorsBtn">Get Indicators</button>
+      </div>
+
+      <div id="status" class="status"></div>
+
+      <div id="result" class="result-card hidden"></div>
+
+      <div id="chartWrapper" class="chart-wrapper hidden">
+        <canvas id="priceChart"></canvas>
+      </div>
+    </section>
+  </main>
+
+  <script src="script.js"></script>
+</body>
+</html>
