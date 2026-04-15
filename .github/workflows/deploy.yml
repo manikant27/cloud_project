@@ -19,16 +19,24 @@ jobs:
           script: |
             set -e
 
-            cd /home/ubuntu/cloud_project || git clone https://github.com/manikant27/cloud_project.git /home/ubuntu/cloud_project
+            # Clone if not exists
+            if [ ! -d "/home/ubuntu/cloud_project" ]; then
+              git clone https://github.com/manikant27/cloud_project.git /home/ubuntu/cloud_project
+            fi
 
             cd /home/ubuntu/cloud_project
             git pull origin main
 
             cd backend
 
+            # Install dependencies
             pip3 install --upgrade pip --break-system-packages
             pip3 install --break-system-packages -r requirements.txt
 
+            # Ensure PM2 exists (optional safety)
+            which pm2 || sudo npm install -g pm2
+
+            # Restart or start app
             pm2 restart stock-api || pm2 start "python3 -m uvicorn main:app --host 0.0.0.0 --port 8000" --name stock-api
 
             pm2 save
