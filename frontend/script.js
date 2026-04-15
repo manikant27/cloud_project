@@ -1,4 +1,4 @@
-const BASE_URL = "http://127.0.0.1:8000";
+const BASE_URL = "http://13.126.117.109:8000";
 
 const symbolInput = document.getElementById("symbolInput");
 const priceBtn = document.getElementById("priceBtn");
