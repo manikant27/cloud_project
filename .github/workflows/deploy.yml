@@ -20,7 +20,7 @@ jobs:
             set -e
 
             # Ensure pip3 exists
-            which pip3 || sudo apt install python3-pip -y
+            which pip3 || sudo apt update && sudo apt install python3-pip -y
 
             # Clone if not exists
             if [ ! -d "/home/ubuntu/cloud_project" ]; then
@@ -32,11 +32,11 @@ jobs:
 
             cd backend
 
-            # Install dependencies globally
-            pip3 install --upgrade pip
-            pip3 install -r requirements.txt
+            # Install dependencies (FIXED)
+            pip3 install --upgrade pip --break-system-packages
+            pip3 install --break-system-packages -r requirements.txt
 
-            # Restart FastAPI app using PM2
-            pm2 describe stock-api > /dev/null 2>&1 && pm2 restart stock-api || pm2 start "uvicorn main:app --host 0.0.0.0 --port 8000" --name stock-api
+            # Restart FastAPI app using PM2 (FIXED)
+            pm2 describe stock-api > /dev/null 2>&1 && pm2 restart stock-api || pm2 start "python3 -m uvicorn main:app --host 0.0.0.0 --port 8000" --name stock-api
 
             pm2 save
