@@ -17,6 +17,11 @@ jobs:
           username: ${{ secrets.EC2_USER }}
           key: ${{ secrets.EC2_SSH_KEY }}
           script: |
+            set -e
+
+            # Ensure pip3 exists
+            which pip3 || sudo apt install python3-pip -y
+
             # Clone if not exists
             if [ ! -d "/home/ubuntu/cloud_project" ]; then
               git clone https://github.com/manikant27/cloud_project.git /home/ubuntu/cloud_project
@@ -27,17 +32,11 @@ jobs:
 
             cd backend
 
-            # Create virtual environment
-            if [ ! -d "venv" ]; then
-              python3 -m venv venv
-            fi
-
-            source venv/bin/activate
-
-            pip install --upgrade pip
-            pip install -r requirements.txt
+            # Install dependencies globally
+            pip3 install --upgrade pip
+            pip3 install -r requirements.txt
 
             # Restart FastAPI app using PM2
-            pm2 describe stock-api > /dev/null 2>&1 && pm2 restart stock-api || pm2 start "venv/bin/uvicorn main:app --host 0.0.0.0 --port 8000" --name stock-api
+            pm2 describe stock-api > /dev/null 2>&1 && pm2 restart stock-api || pm2 start "uvicorn main:app --host 0.0.0.0 --port 8000" --name stock-api
 
             pm2 save
